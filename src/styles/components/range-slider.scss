@@ -1,0 +1,58 @@
+// refactor create component
+.range-slider {
+    display: flex;
+    margin-bottom: 10px;
+
+    &-text {
+        margin: 0 7px;
+    }
+
+    $black-color: #000;
+    $center-gradient-color: #030303;
+    $red-color: #db4242;
+    $green-color: #42db4f;
+    $blue-color: #4268db;
+    $width-of-gradient-side-left: 50%;
+    $width-of-gradient-side-right: 0%;
+    &-red {
+        &::-ms-fill-lower {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $red-color $width-of-gradient-side-left);
+        }
+
+        &::-ms-fill-upper {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $red-color $width-of-gradient-side-left);
+        }
+
+        &::-webkit-slider-runnable-track {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $red-color $width-of-gradient-side-left);
+        }
+    }
+
+    &-green {
+        &::-ms-fill-lower {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $green-color $width-of-gradient-side-left);
+        }
+
+        &::-ms-fill-upper {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $green-color $width-of-gradient-side-left);
+        }
+
+        &::-webkit-slider-runnable-track {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $green-color $width-of-gradient-side-left);
+        }
+    }
+
+    &-blue {
+        &::-ms-fill-lower {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $blue-color $width-of-gradient-side-left);
+        }
+
+        &::-ms-fill-upper {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $blue-color $width-of-gradient-side-left);
+        }
+
+        &::-webkit-slider-runnable-track {
+            background: linear-gradient(to left, $black-color $width-of-gradient-side-right, $blue-color $width-of-gradient-side-left);
+        }
+    }
+}
