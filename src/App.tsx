@@ -1,104 +1,78 @@
-import React, {useEffect, useRef, useState} from 'react'
-import RangeSlider from './components/RangeSlider'
-import './App.scss'
+import React, {ChangeEvent, useState} from 'react'
+import ColorPicker from './components/ColorPicker/ColorPicker'
+
+const colors = [
+    {
+        name: 'red',
+        color: '#fc0303'
+    },
+    {
+        name: 'yellow',
+        color: '#fcfc03'
+    },
+    {
+        name: 'green',
+        color: '#0bfc03'
+    },
+    {
+        name: 'blue',
+        color: '#033dfc'
+    }
+]
 
 function App() {
-    const [toggleDropdownRgb, setToggleDropdownRgb] = useState(false)
-    const [toggleDropdownColor, setToggleDropdownColor] = useState(false)
+    const [hexColorValue, setHexColorValue] = useState('#505050')
+    const [hex, setHex] =  useState(['50', '50', '50'])
+    const [squareHexColor, setSquareHexColor] = useState('#505050')
 
-    const dropdownRgbRef = useRef<HTMLDivElement>(null)
-    const dropdownColorRef = useRef<HTMLUListElement>(null)
+    const [lastSquareHexColor, setLastSquareHexColor] = useState('#505050')
 
-    useEffect(() => {
-        document.body.addEventListener('click', (e: MouseEvent) => {
-            if (dropdownRgbRef?.current?.contains(e.target as HTMLElement) || dropdownColorRef?.current?.contains(e.target as HTMLElement)) {
-                return
-            }
+    const convertToHex = (string: string): string => {
+        const hex = Number(string).toString(16).padStart(2, '0')
+        return hex === '0' ? hex + '0' : hex
+    }
 
-            setToggleDropdownRgb(false)
-            setToggleDropdownColor(false)
-        })
-    }, [])
+    const handleChange = (e: ChangeEvent<HTMLInputElement>, colorCode: string) => {
+        let [r, g, b] = hex
+        const {value} = e.target
 
-    const handleDropdownToggle = (e: React.MouseEvent, whichToggle?: string) => {
-        e.stopPropagation()
-
-        if (whichToggle === 'dropdown-rgb') {
-            setToggleDropdownColor(false)
-            setToggleDropdownRgb(!toggleDropdownRgb)
-        } else {
-            setToggleDropdownRgb(false)
-            setToggleDropdownColor(!toggleDropdownColor)
+        if (colorCode === 'red') {
+            r = convertToHex(value)
         }
+        if (colorCode === 'green') {
+            g = convertToHex(value)
+        }
+        if (colorCode === 'blue') {
+            b = convertToHex(value)
+        }
+
+        setHex([r, g, b])
+        setSquareHexColor(`#${r}${g}${b}`)
+    }
+
+    const onColorClickEvent = (color: string) => {
+        setHexColorValue(color)
+    }
+
+    const onDropdownCancelEvent = () => {
+        setSquareHexColor(lastSquareHexColor)
+    }
+
+    const onDropdownSubmitEvent = () => {
+        setHexColorValue(squareHexColor)
+        setLastSquareHexColor(squareHexColor)
     }
 
     return (
-        <div className={'color-picker'}>
-            <p className={'color-showcase'}>#ff33cc</p>
-            <button
-                aria-label={'Generate Color'}
-                className="color-box color-block center-by-flex"
-                onClick={(e) => handleDropdownToggle(e, 'dropdown-rgb')}
-            >
-                <span className={'hex-bg'} style={{backgroundColor: '#ff33cc'}}/>
-            </button>
-            {toggleDropdownRgb &&
-                <div ref={dropdownRgbRef} role={'list'} className={'dropdown dropdown-large dropdown-rgb'} id={'dropdown-rgb'}>
-                    <RangeSlider
-                        className={'range-slider-red'}
-                        colorText={'R'}
-                    />
-                    <RangeSlider
-                        className={'range-slider-green'}
-                        colorText={'G'}
-                    />
-                    <RangeSlider
-                        className={'range-slider-blue'}
-                        colorText={'B'}
-                    />
-                    <div className={'dropdown-buttons'}>
-                        <button className={'button button-second dropdown-buttons-first'}>cancel</button>
-                        <button className={'button button-primary'}>ok</button>
-                    </div>
-                </div>
-            }
-
-            <button
-                aria-label={'Choose Color'}
-                className={'color-history color-block center-by-flex'}
-                onClick={(e) => handleDropdownToggle(e)}
-            >
-                <span className={'arrow-down'} />
-            </button>
-            {toggleDropdownColor &&
-                <ul ref={dropdownColorRef} className={'dropdown dropdown-list'}>
-                    <li className={'list-item'}>
-                        <button className={'color-button'} aria-label={'Color Red'}>
-                            <span className={'color-text'}>Red</span>
-                            <span className={'color-bg bg-red'}/>
-                        </button>
-                    </li>
-                    <li className={'list-item'}>
-                        <button className={'color-button'} aria-label={'Color Yellow'}>
-                            <span className={'color-text'}>Yellow</span>
-                            <span className={'color-bg bg-yellow'}/>
-                        </button>
-                    </li>
-                    <li className={'list-item'}>
-                        <button className={'color-button'} aria-label={'Color Green'}>
-                            <span className={'color-text'}>Green</span>
-                            <span className={'color-bg bg-green'}/>
-                        </button>
-                    </li>
-                    <li className={'list-item'}>
-                        <button className={'color-button'} aria-label={'Color Blue'}>
-                            <span className={'color-text'}>Blue</span>
-                            <span className={'color-bg bg-blue'}/>
-                        </button>
-                    </li>
-                </ul>
-            }
-        </div>
+        <ColorPicker
+            value={hexColorValue}
+            squareHexColor={squareHexColor}
+            onChange={handleChange}
+            colors={colors}
+            onColorClickEvent={onColorClickEvent}
+            onDropdownCancelEvent={onDropdownCancelEvent}
+            onDropdownSubmitEvent={onDropdownSubmitEvent}
+        />
     )
 }
 

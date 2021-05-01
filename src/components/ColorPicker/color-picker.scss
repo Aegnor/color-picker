@@ -119,6 +119,12 @@ $size-of-triangle: 8px;
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        transition: 0.2s background-color ease-in, 0.2s color ease-in;
+
+        &:hover {
+            background-color: #4268db;
+            color: #fff;
+        }
     }
 
     &-bg {
@@ -131,4 +137,3 @@ $size-of-triangle: 8px;
         text-transform: uppercase;
     }
 }
-

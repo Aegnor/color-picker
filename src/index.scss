@@ -1,4 +1,4 @@
-@import 'styles/input';
+@import './styles/input.scss';
 
 * {
     margin: 0;
@@ -38,22 +38,4 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.bg {
-    &-red {
-        background-color: red;
-    }
-
-    &-yellow {
-        background-color: yellow;
-    }
-
-    &-green {
-        background-color: green;
-    }
-
-    &-blue {
-        background-color: blue;
-    }
 }
