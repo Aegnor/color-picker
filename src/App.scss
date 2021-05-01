@@ -1,5 +1,3 @@
-@import 'styles/components/range-slider';
-
 .color {
     &-picker {
         display: flex;
@@ -19,7 +17,6 @@
     &-block {
         width: 15%;
         border-left: 1px solid #e4e4e4;
-        position: relative;
     }
 }
 
@@ -38,6 +35,7 @@ $size-of-arrow: 10px;
 }
 
 $dropdown-margin-top: 20px;
+$size-of-triangle: 8px;
 .dropdown {
     position: absolute;
     top: 100%;
@@ -46,6 +44,16 @@ $dropdown-margin-top: 20px;
     padding: 10px;
     box-shadow: 0 9px 20px -2px rgba(0, 0, 0, 0.2);
     background-color: #fff;
+
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        margin-top: $dropdown-margin-top - $size-of-triangle;
+        border-left: $size-of-triangle solid transparent;
+        border-right: $size-of-triangle solid transparent;
+        border-bottom: $size-of-triangle solid #fff;
+    }
 
     &-large {
         width: 80%;
@@ -60,25 +68,19 @@ $dropdown-margin-top: 20px;
         }
     }
 
-    $size-of-triangle: 8px;
-
-    &-triangle {
-        position: relative;
+    &-list {
+        padding: 0;
+        width: 100%;
+        max-width: 170px;
 
         &:after {
-            // remove
-            display: none;
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            pointer-events: none;
-            margin-top: $dropdown-margin-top - $size-of-triangle;
-            transform: translateX(-50%);
-            z-index: 2;
-            border-left: $size-of-triangle solid transparent;
-            border-right: $size-of-triangle solid transparent;
-            border-bottom: $size-of-triangle solid #fff;
+            right: 14px;
+        }
+    }
+
+    &-rgb {
+        &:after {
+            right: 59px;
         }
     }
 }
@@ -97,14 +99,6 @@ $dropdown-margin-top: 20px;
 
     &-primary {
         background-color: #a4e852;
-    }
-}
-
-.dropdown {
-    &-list {
-        padding: 0;
-        width: 100%;
-        max-width: 170px;
     }
 }
 
