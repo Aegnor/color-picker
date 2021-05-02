@@ -9,9 +9,9 @@ interface IColors {
 
 interface IColorPickerProps {
     value: string,
-    squareHexColor: string,
     colors: Array<IColors>,
     onChange: (e: ChangeEvent<HTMLInputElement>, colorCode: string) => void,
+    squareHexColor: string,
     onColorClickEvent: (color: string) => void,
     onDropdownCancelEvent: () => void
     onDropdownSubmitEvent: () => void
@@ -19,26 +19,26 @@ interface IColorPickerProps {
 
 function ColorPicker(props: IColorPickerProps) {
     const [toggleDropdownRgb, setToggleDropdownRgb] = useState(false)
-    const [toggleDropdownColor, setToggleDropdownColor] = useState(false)
+    const [toggleDropdownColorList, setToggleDropdownColorList] = useState(false)
 
     const dropdownRgbRef = useRef<HTMLDivElement>(null)
-    const dropdownColorRef = useRef<HTMLUListElement>(null)
+    const dropdownColorListRef = useRef<HTMLUListElement>(null)
 
     const handleDropdownToggle = (e: React.MouseEvent, whichToggle?: string) => {
         e.stopPropagation()
 
         if (whichToggle === 'dropdown-rgb') {
-            setToggleDropdownColor(false)
+            setToggleDropdownColorList(false)
             setToggleDropdownRgb(!toggleDropdownRgb)
         } else {
             setToggleDropdownRgb(false)
-            setToggleDropdownColor(!toggleDropdownColor)
+            setToggleDropdownColorList(!toggleDropdownColorList)
         }
     }
 
     const handleClickColor = (color: string) => {
         props.onColorClickEvent(color)
-        setToggleDropdownColor(false)
+        setToggleDropdownColorList(false)
     }
 
     const handleClickCancel = () => {
@@ -65,13 +65,13 @@ function ColorPicker(props: IColorPickerProps) {
 
     useEffect(() => {
         document.body.addEventListener('click', (e: MouseEvent) => {
-            if (dropdownRgbRef?.current?.contains(e.target as HTMLElement) || dropdownColorRef?.current?.contains(e.target as HTMLElement)) {
+            if (dropdownRgbRef?.current?.contains(e.target as HTMLElement) || dropdownColorListRef?.current?.contains(e.target as HTMLElement)) {
                 return
             }
 
             props.onDropdownCancelEvent()
             setToggleDropdownRgb(false)
-            setToggleDropdownColor(false)
+            setToggleDropdownColorList(false)
         })
     }, [props])
 
@@ -80,6 +80,7 @@ function ColorPicker(props: IColorPickerProps) {
             <p className={'color-showcase'}>{props.value}</p>
             <button
                 aria-label={'Generate Color'}
+                id={'color-generator'}
                 className="color-box color-block center-by-flex"
                 onClick={(e) => handleDropdownToggle(e, 'dropdown-rgb')}
             >
@@ -87,6 +88,7 @@ function ColorPicker(props: IColorPickerProps) {
             </button>
             <div
                 ref={dropdownRgbRef}
+                aria-labelledby="color-generator"
                 role={'list'}
                 className={'dropdown dropdown-large dropdown-rgb'}
                 id={'dropdown-rgb'}
@@ -115,13 +117,18 @@ function ColorPicker(props: IColorPickerProps) {
 
             <button
                 aria-label={'Choose Color'}
+                id={'color-list'}
                 className={'color-history color-block center-by-flex'}
                 onClick={(e) => handleDropdownToggle(e)}
             >
                 <span className={'arrow-down'}/>
             </button>
-            {toggleDropdownColor &&
-            <ul ref={dropdownColorRef} className={'dropdown dropdown-list'}>
+            {toggleDropdownColorList &&
+            <ul
+                ref={dropdownColorListRef}
+                className={'dropdown dropdown-list'}
+                aria-labelledby="color-list"
+            >
                 {renderColors()}
             </ul>
             }
