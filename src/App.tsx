@@ -20,17 +20,18 @@ const colors = [
     }
 ]
 
+const convertToHex = (string: string): string => {
+    const hex = Number(string).toString(16).padStart(2, '0')
+    return hex === '0' ? hex + '0' : hex
+}
+
 function App() {
-    const [hexColorValue, setHexColorValue] = useState('#505050')
+    const initialHexValue = '#505050'
+
+    const [hexColorValue, setHexColorValue] = useState(initialHexValue)
+    const [squareHexColor, setSquareHexColor] = useState(initialHexValue)
+    const [lastSquareHexColor, setLastSquareHexColor] = useState(initialHexValue)
     const [hex, setHex] =  useState(['50', '50', '50'])
-    const [squareHexColor, setSquareHexColor] = useState('#505050')
-
-    const [lastSquareHexColor, setLastSquareHexColor] = useState('#505050')
-
-    const convertToHex = (string: string): string => {
-        const hex = Number(string).toString(16).padStart(2, '0')
-        return hex === '0' ? hex + '0' : hex
-    }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>, colorCode: string) => {
         let [r, g, b] = hex
@@ -66,9 +67,9 @@ function App() {
     return (
         <ColorPicker
             value={hexColorValue}
-            squareHexColor={squareHexColor}
             onChange={handleChange}
             colors={colors}
+            squareHexColor={squareHexColor}
             onColorClickEvent={onColorClickEvent}
             onDropdownCancelEvent={onDropdownCancelEvent}
             onDropdownSubmitEvent={onDropdownSubmitEvent}
